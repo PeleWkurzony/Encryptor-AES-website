@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Szyfrowanie AES</title>
+    <style>
+        body {
+            display: flex;
+            background-color: black;
+            color: #20C20E;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #lewy {
+            width: 50%;
+        }
+        #lewy > fieldset {
+            border-color: #20C20E;
+            display: flex;
+            flex-direction: column;
+        }
+        #lewy > fieldset * {
+            border-color: #20C20E;
+            outline-color: #20C20E;
+            margin: 5px 0;
+            background-color: black;
+            color: #20C20E;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #encode {
+            width: 30%;
+        }
+        #hash {
+            border: solid 1px #20C20E;
+        }
+        #prawy {
+            width: 50%;
+        }
+        #prawy > fieldset {
+            border-color: #20C20E;
+            display: flex;
+            flex-direction: column;
+        }
+        #prawy > fieldset * {
+            border-color: #20C20E;
+            outline-color: #20C20E;
+            margin: 5px 0;
+            background-color: black;
+            color: #20C20E;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        #decode {
+            width: 30%;
+        }
+        textarea:focus, input:focus {
+            outline: none;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="lewy">
+        <fieldset>
+            <legend> Zaszyfruj wiadomość </legend>
+            <textarea id="toEncode" cols="30" rows="10"></textarea>
+            Klucz: <input type="text" id="encodeKey">
+            <button id="encode"> Zaszyfruj </button>
+            <textarea id="hash" disabled disabled cols="30" rows="1"></textarea>
+        </fieldset>
+    </div>
+    <div id="prawy">    
+        <fieldset>
+            <legend> Roszyfruj wiadomość </legend>
+            <textarea id="toDecode" cols="30" rows="1"></textarea>
+            Klucz: <input type="text" id="decodeKey">
+            <button id="decode"> Rozszyfruj </button>
+            <textarea id="message" disabled cols="30" rows="10"></textarea>
+        </fieldset>
+    </div>
+</body>
+
+<script>
+    /// Encoding
+    document.querySelector('#encode').addEventListener('click', () => {
+        let message = document.querySelector('#toEncode').value;
+        let key = document.querySelector('#encodeKey').value;
+
+        document.querySelector('#hash').value = CryptoJS.AES.encrypt(message, key);
+    });
+
+    /// Decoding
+    document.querySelector('#decode').addEventListener('click', () => {
+        let hash = document.querySelector('#toDecode').value;
+        let key = document.querySelector('#decodeKey').value;
+
+        document.querySelector('#message').value = CryptoJS.AES.decrypt(hash, key).toString(CryptoJS.enc.Utf8);
+    });
+
+</script>
+
+<script src="bundle.js"></script>
+</html>
